@@ -30,6 +30,30 @@ export default function Books() {
     fetchBooks();
   }, []);
 
+
+  const handleDelete = async (id) => {
+    const token = localStorage.getItem('token'); // Get token from local storage
+    
+    try{
+      const response = await fetch(`http://localhost:3001/api/books/delete/${id}`, {
+        method: 'Delete',
+        headers: {
+          Authorization: `Bearer ${token}`,  // Include token in Authorization header
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to delete book');
+
+      // Remove the deleted book from state
+      setBooks(prevBooks => prevBooks.filter(book => book.id !== id));
+    }catch(error){
+      setError(error.message);
+    }
+
+  }
+
+
+
   return (
     <div>
       <h1 className="text-2xl mb-4">Books</h1>
@@ -42,6 +66,12 @@ export default function Books() {
             <p>ISBN: {book.isbn}</p>
             <Link href={`/books/${book.id}`} className="text-blue-500">View Details</Link> {/* Link to book details */}
             <Link href={`/books/edit/${book.id}`} className="text-blue-500">Edit</Link> {/* Link to edit book */}
+            <button 
+              onClick={() => handleDelete(book.id)} 
+              className="text-red-500 ml-4"
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>

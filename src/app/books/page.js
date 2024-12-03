@@ -41,6 +41,7 @@ export default function Books() {
             <p>Author: {book.author}</p>
             <p>ISBN: {book.isbn}</p>
             <Link href={`/books/${book.id}`} className="text-blue-500">View Details</Link> {/* Link to book details */}
+            <Link href={`/books/edit/${book.id}`} className="text-blue-500">Edit</Link> {/* Link to edit book */}
           </li>
         ))}
       </ul>

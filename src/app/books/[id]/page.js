@@ -2,17 +2,17 @@
 "use client"; // This line marks the component as a Client Component
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation'; // Import from next/navigation
+import { usePathname } from 'next/navigation';
 
 export default function BookDetails() {
-  const router = useRouter();
+  const pathname = usePathname();
   const [book, setBook] = useState(null);
   const [error, setError] = useState(null); // State to handle errors
 
   useEffect(() => {
     // Check if router is ready before accessing query parameters
-    if (router.isReady) {
-      const { id } = router.query; // Get the book ID from the URL
+
+      const id = pathname.split('/').pop(); // Extract `id` // Get the book ID from the URL
       console.log("Fetching details for book ID:", id);
       
       if (id) {
@@ -35,8 +35,8 @@ export default function BookDetails() {
 
         fetchBookDetails();
       }
-    }
-  }, [router.isReady]); // Add router.isReady as a dependency
+
+  }, []); // Add router.isReady as a dependency
 
   if (error) return <div>{error}</div>; // Display error message if any
   if (!book) return <div>Loading...</div>; // Loading state
